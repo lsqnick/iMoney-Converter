@@ -1,0 +1,218 @@
+﻿:root {
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", "Microsoft YaHei", sans-serif;
+  background-color: #080a12;
+  color: #f6f8ff;
+  width: 320px;
+}
+
+.popup {
+  width: 320px;
+  padding: 16px 14px 18px;
+  background: linear-gradient(180deg, #0f1320 0%, #0b0e19 100%);
+}
+
+.popup__header {
+  margin-bottom: 14px;
+}
+
+.popup__title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.popup__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.popup__title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.settings-button,
+.language-button {
+  background: rgba(255, 255, 255, 0.08);
+  color: #d6dcf3;
+  border: 1px solid rgba(94, 124, 196, 0.35);
+  border-radius: 10px;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.settings-button {
+  padding: 6px 10px;
+  font-size: 16px;
+}
+
+.language-button {
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.settings-button:hover,
+.language-button:hover {
+  border-color: rgba(126, 170, 255, 0.6);
+  box-shadow: 0 6px 16px rgba(48, 71, 138, 0.4);
+  transform: translateY(-1px);
+}
+
+.settings-button:focus-visible,
+.language-button:focus-visible {
+  outline: none;
+  border-color: rgba(146, 186, 255, 0.9);
+  box-shadow: 0 0 0 3px rgba(146, 186, 255, 0.35);
+}
+
+.popup__subtitle {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: #8f9cb5;
+}
+
+.currency-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.currency-placeholder {
+  padding: 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  color: #8f9cb5;
+  text-align: center;
+  font-size: 13px;
+}
+
+.currency-item {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  grid-template-rows: auto auto;
+  grid-column-gap: 12px;
+  grid-row-gap: 6px;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(44, 51, 73, 0.35) 0%, rgba(18, 22, 33, 0.85) 100%);
+  border: 1px solid rgba(79, 140, 255, 0.12);
+  box-shadow: 0 8px 20px rgba(5, 8, 20, 0.35);
+}
+
+.currency-flag-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  grid-row: 1 / span 2;
+  grid-column: 1;
+}
+
+.currency-text {  
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  grid-row: 1;
+  grid-column: 2;
+}
+
+.currency-code {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: 0.2px;
+}
+
+.currency-name {
+  font-size: 12px;
+  color: #8f9cb5;
+  line-height: 1.25;
+  white-space: normal;
+  word-break: keep-all;
+}
+
+.input-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  grid-row: 2;
+  grid-column: 2;
+}
+
+.amount-input {
+  width: 160px;
+  padding: 8px 36px 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(79, 140, 255, 0.2);
+  background-color: rgba(8, 10, 18, 0.85);
+  color: #f6f8ff;
+  font-size: 16px;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.amount-input:focus {
+  outline: none;
+  border-color: rgba(126, 170, 255, 0.6);
+  box-shadow: 0 0 0 3px rgba(126, 170, 255, 0.25);
+}
+
+.clear-amount {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #f6f8ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, background 0.2s ease;
+}
+
+.input-wrapper:hover .clear-amount,
+.input-wrapper:focus-within .clear-amount {
+  opacity: 0.6;
+  pointer-events: auto;
+}
+
+.clear-amount:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.amount-input::-webkit-outer-spin-button,
+.amount-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.amount-input[type="number"] {
+  -moz-appearance: textfield;
+}

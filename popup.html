@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>iMoney Converter</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <main class="popup" role="main">
+    <header class="popup__header">
+      <div class="popup__title-row">
+        <h1 class="popup__title">iMoney Converter</h1>
+        <div class="popup__actions">
+          <button type="button" class="settings-button" id="open-settings" aria-label="Manage currency settings">&#9881;</button>
+          <button type="button" class="language-button" id="language-toggle" aria-label="Switch language">&#20013;&#25991;</button>
+        </div>
+      </div>
+      <p class="popup__subtitle">Live Rate Conversion</p>
+    </header>
+
+    <section id="conversion-list" class="currency-list" aria-live="polite">
+      <div class="currency-placeholder">Loading exchange rates...</div>
+    </section>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>
