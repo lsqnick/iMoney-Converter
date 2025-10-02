@@ -1,6 +1,6 @@
 ﻿const BASE_CURRENCY = "USD";
 const BASE_AMOUNT = 100;
-const INITIAL_CURRENCIES = ["USD", "CNY", "JPY", "GBP", "EUR", "HKD"];
+const INITIAL_CURRENCIES = ["USD", "CNY", "JPY", "GBP", "EUR"];
 
 const CURRENCY_DETAILS = {
   USD: { name: "美元", en_name: "US Dollar" },
@@ -16,7 +16,7 @@ const DEFAULT_LANGUAGE = "en";
 const FLAG_BASE_URL = "https://flagcdn.com/96x72/";
 
 const TRANSLATIONS = {
-  appTitle: { en: "iMoney Converter", zh: "iMoney 汇率转换" },
+  appTitle: { en: "iMoney Converter", zh: "iMoney Converter" },
   subtitle: { en: "Live Rate Conversion", zh: "实时汇率转换" },
   loading: { en: "Loading exchange rates...", zh: "正在加载汇率数据..." },
   noData: { en: "Exchange rates unavailable.", zh: "暂无汇率数据。" },
@@ -176,7 +176,7 @@ function renderCurrencyList(ratePayload) {
 
     const codeLabel = document.createElement("span");
     codeLabel.className = "currency-code";
-    codeLabel.textContent = code;
+    codeLabel.textContent = "" + code;
 
     const nameLabel = document.createElement("span");
     nameLabel.className = "currency-name";
@@ -460,3 +460,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   bindLanguageToggle();
   loadRatesAndRender();
 });
+
+
+
+
+

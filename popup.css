@@ -103,7 +103,7 @@ body {
 
 .currency-item {
   display: grid;
-  grid-template-columns: 44px 1fr;
+  grid-template-columns: 48px minmax(0, 1fr);
   grid-template-rows: auto auto;
   grid-column-gap: 12px;
   grid-row-gap: 6px;
@@ -113,6 +113,12 @@ body {
   background: linear-gradient(135deg, rgba(44, 51, 73, 0.35) 0%, rgba(18, 22, 33, 0.85) 100%);
   border: 1px solid rgba(79, 140, 255, 0.12);
   box-shadow: 0 8px 20px rgba(5, 8, 20, 0.35);
+}
+
+.currency-item.is-base-currency {
+  border-color: rgba(147, 193, 255, 0.85);
+  box-shadow: 0 0 0 2px rgba(98, 142, 255, 0.35), 0 12px 26px rgba(10, 14, 32, 0.6);
+  background: linear-gradient(135deg, rgba(52, 74, 135, 0.5) 0%, rgba(22, 30, 54, 0.96) 100%);
 }
 
 .currency-flag-img {
@@ -125,7 +131,8 @@ body {
   grid-column: 1;
 }
 
-.currency-text {  
+.currency-text {
+  padding-left: 4px;  
   display: flex;
   align-items: baseline;
   gap: 8px;
@@ -134,9 +141,9 @@ body {
   grid-column: 2;
 }
 
-.currency-code {
-  font-size: 14px;
-  font-weight: 600;
+\.currency-code {
+  font-size: 12px;
+  font-weight: 400;
   color: #ffffff;
   letter-spacing: 0.2px;
 }
@@ -151,30 +158,38 @@ body {
 
 .input-wrapper {
   position: relative;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   grid-row: 2;
   grid-column: 2;
+  width: 100%;
 }
 
 .amount-input {
-  width: 160px;
-  padding: 8px 36px 8px 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(79, 140, 255, 0.2);
-  background-color: rgba(8, 10, 18, 0.85);
+  width: min(220px, 100%);
+  padding: 7px 34px 7px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(95, 150, 255, 0.25);
+  background: linear-gradient(135deg, rgba(20, 24, 36, 0.9) 0%, rgba(12, 16, 28, 0.85) 100%);
   color: #f6f8ff;
   font-size: 16px;
+  font-weight: 500;
+  font-family: "Segoe UI", "Microsoft YaHei", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
   text-align: left;
   font-variant-numeric: tabular-nums;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  letter-spacing: 0.01em;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 6px 18px rgba(6, 10, 24, 0.45);
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
+
 
 .amount-input:focus {
   outline: none;
-  border-color: rgba(126, 170, 255, 0.6);
-  box-shadow: 0 0 0 3px rgba(126, 170, 255, 0.25);
+  border-color: rgba(147, 193, 255, 0.8);
+  box-shadow: 0 0 0 3px rgba(102, 152, 255, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  background: linear-gradient(135deg, rgba(26, 32, 48, 0.95) 0%, rgba(18, 22, 36, 0.92) 100%);
 }
+
 
 .clear-amount {
   position: absolute;
@@ -216,3 +231,14 @@ body {
 .amount-input[type="number"] {
   -moz-appearance: textfield;
 }
+
+
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-﻿// options.js
+// options.js
 
 const ALL_CURRENCIES = [
   "USD", "CNY", "JPY", "GBP", "EUR", "HKD", "CAD", "AUD", "CHF", "SGD",
@@ -30,7 +30,7 @@ const CURRENCY_DETAILS = {
 
 const USER_LIST_STORAGE_KEY = "userCurrencyList";
 const LANGUAGE_STORAGE_KEY = "languagePreference";
-const DEFAULT_DISPLAYED = ["USD", "CNY", "JPY", "GBP", "EUR", "HKD"];
+const DEFAULT_DISPLAYED = ["USD", "CNY", "JPY", "GBP", "EUR"];
 const DEFAULT_LANGUAGE = "en";
 const FLAG_BASE_URL = "https://flagcdn.com/32x24/";
 
@@ -38,9 +38,9 @@ const TRANSLATIONS = {
   pageTitle: { en: "Manage Currency List", zh: "管理货币列表" },
   pageSubtitle: {
     en: "Choose which currencies appear in the popup or add new ones.",
-    zh: "选择在插件界面显示的货币，或添加新的货币。"
+    zh: "选择在弹窗中显示的货币，或添加新的货币。"
   },
-  activeSection: { en: "Displayed Currencies", zh: "当前显示货币" },
+  activeSection: { en: "Displayed Currencies", zh: "当前显示列表" },
   availableSection: { en: "Available Currencies", zh: "可选货币" },
   add: { en: "Add", zh: "添加" },
   remove: { en: "Remove", zh: "移除" },
@@ -310,6 +310,8 @@ if (chrome.storage && chrome.storage.onChanged) {
     }
   });
 }
+
+
 
 
 
