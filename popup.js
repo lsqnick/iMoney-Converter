@@ -51,6 +51,8 @@ let currentBaseAmount = BASE_AMOUNT;
 let currentBaseDisplay = BASE_AMOUNT.toFixed(2);
 let currentLanguage = DEFAULT_LANGUAGE;
 const inputRefs = new Map();
+let lastFocusedValue = null;
+let lastFocusedInput = null;
 
 function getCurrencyDetails(code) {
   const fallback = { name: code, en_name: code };
@@ -270,10 +272,7 @@ function renderCurrencyList(ratePayload) {
     clearBtn.title = getTranslation("clearLabel");
 
     const clearValue = () => {
-      const formattedZero = "0.00";
-      input.value = formattedZero;
-      input.dataset.lastValue = formattedZero;
-      calculateAll(code, 0, formattedZero);
+      input.value = "";
       input.focus();
     };
 
@@ -351,6 +350,11 @@ function calculateAll(sourceCode, sourceAmount, sourceDisplayValue = null) {
 
 function attachInputListeners() {
   inputRefs.forEach((input, code) => {
+    input.addEventListener("focus", (event) => {
+      lastFocusedInput = event.target;
+      lastFocusedValue = event.target.dataset.lastValue ?? event.target.value;
+    });
+
     input.addEventListener("input", (event) => {
       const raw = event.target.value.trim();
       if (raw === "") {
@@ -366,7 +370,14 @@ function attachInputListeners() {
     input.addEventListener("blur", (event) => {
       const raw = event.target.value.trim();
       if (raw === "") {
-        calculateAll(currentBaseCode, currentBaseAmount, currentBaseDisplay);
+        const restoreValue =
+          lastFocusedInput === event.target && lastFocusedValue !== null
+            ? lastFocusedValue
+            : event.target.dataset.lastValue ?? currentBaseDisplay;
+        event.target.value = restoreValue;
+        event.target.dataset.lastValue = restoreValue;
+        lastFocusedInput = null;
+        lastFocusedValue = null;
         return;
       }
 
@@ -374,10 +385,14 @@ function attachInputListeners() {
       if (!Number.isFinite(amount)) {
         const restore = event.target.dataset.lastValue ?? "0.00";
         event.target.value = restore;
+        lastFocusedInput = null;
+        lastFocusedValue = null;
         return;
       }
 
       calculateAll(code, amount);
+      lastFocusedInput = null;
+      lastFocusedValue = null;
     });
   });
 }
