@@ -1,6 +1,5 @@
 ﻿const BASE_CURRENCY = "USD";
 const BASE_AMOUNT = 100;
-const INITIAL_CURRENCIES = ["USD", "CNY", "JPY", "GBP", "EUR"];
 
 const CURRENCY_DETAILS = {
   USD: { name: "美元", en_name: "US Dollar" },
@@ -8,12 +7,30 @@ const CURRENCY_DETAILS = {
   JPY: { name: "日元", en_name: "Japanese Yen" },
   GBP: { name: "英镑", en_name: "British Pound" },
   EUR: { name: "欧元", en_name: "Euro" },
-  HKD: { name: "港币", en_name: "Hong Kong Dollar" }
+  HKD: { name: "港币", en_name: "Hong Kong Dollar" },
+  CAD: { name: "加元", en_name: "Canadian Dollar" },
+  AUD: { name: "澳元", en_name: "Australian Dollar" },
+  CHF: { name: "瑞士法郎", en_name: "Swiss Franc" },
+  SGD: { name: "新加坡元", en_name: "Singapore Dollar" },
+  KRW: { name: "韩元", en_name: "South Korean Won" },
+  TWD: { name: "新台币", en_name: "New Taiwan Dollar" },
+  THB: { name: "泰铢", en_name: "Thai Baht" },
+  MYR: { name: "马来西亚令吉", en_name: "Malaysian Ringgit" },
+  NZD: { name: "新西兰元", en_name: "New Zealand Dollar" },
+  INR: { name: "印度卢比", en_name: "Indian Rupee" },
+  RUB: { name: "俄罗斯卢布", en_name: "Russian Ruble" },
+  BRL: { name: "巴西雷亚尔", en_name: "Brazilian Real" },
+  MXN: { name: "墨西哥比索", en_name: "Mexican Peso" },
+  SAR: { name: "沙特里亚尔", en_name: "Saudi Riyal" }
 };
 
+const SUPPORTED_CURRENCIES = Object.keys(CURRENCY_DETAILS);
 const LANGUAGE_STORAGE_KEY = "languagePreference";
+const USER_LIST_STORAGE_KEY = "userCurrencyList";
 const DEFAULT_LANGUAGE = "en";
 const FLAG_BASE_URL = "https://flagcdn.com/96x72/";
+
+const DEFAULT_DISPLAYED = ["USD", "CNY", "JPY", "GBP", "EUR"];
 
 const TRANSLATIONS = {
   appTitle: { en: "iMoney Converter", zh: "iMoney Converter" },
@@ -27,6 +44,7 @@ const TRANSLATIONS = {
   clearLabel: { en: "Clear amount", zh: "清空金额" }
 };
 
+let displayedCurrencies = [...DEFAULT_DISPLAYED];
 let cachedRates = null;
 let currentBaseCode = BASE_CURRENCY;
 let currentBaseAmount = BASE_AMOUNT;
@@ -138,6 +156,50 @@ function getCurrencyDisplayName(details) {
   return details.name || details.en_name || "";
 }
 
+function sanitizeCurrencyCode(code) {
+  if (typeof code !== "string") {
+    return null;
+  }
+  const value = code.trim().toUpperCase();
+  return value ? value : null;
+}
+
+function normalizeCurrencyList(list) {
+  if (!Array.isArray(list)) {
+    return [...DEFAULT_DISPLAYED];
+  }
+
+  const normalized = [];
+  list.forEach((code) => {
+    const normalizedCode = sanitizeCurrencyCode(code);
+    if (!normalizedCode) {
+      return;
+    }
+    if (!SUPPORTED_CURRENCIES.includes(normalizedCode)) {
+      return;
+    }
+    if (!normalized.includes(normalizedCode)) {
+      normalized.push(normalizedCode);
+    }
+  });
+
+  if (!normalized.includes(BASE_CURRENCY)) {
+    normalized.unshift(BASE_CURRENCY);
+  }
+
+  return normalized.length ? normalized : [...DEFAULT_DISPLAYED];
+}
+
+async function loadDisplayedCurrencies() {
+  try {
+    const stored = await chrome.storage.local.get(USER_LIST_STORAGE_KEY);
+    displayedCurrencies = normalizeCurrencyList(stored[USER_LIST_STORAGE_KEY]);
+  } catch (error) {
+    console.warn("Failed to load currency list", error);
+    displayedCurrencies = [...DEFAULT_DISPLAYED];
+  }
+}
+
 function renderCurrencyList(ratePayload) {
   const container = getConversionListElement();
   if (!container) {
@@ -150,7 +212,7 @@ function renderCurrencyList(ratePayload) {
   const conversionRates = ratePayload && ratePayload.conversion_rates ? ratePayload.conversion_rates : {};
   const baseRate = Number(conversionRates[BASE_CURRENCY]) || 1;
 
-  INITIAL_CURRENCIES.forEach((code) => {
+  displayedCurrencies.forEach((code) => {
     const details = getCurrencyDetails(code);
     const displayName = getCurrencyDisplayName(details);
     const rate = Number(conversionRates[code]);
@@ -454,12 +516,45 @@ async function loadRatesAndRender() {
   }
 }
 
+if (chrome.storage && chrome.storage.onChanged) {
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName !== "local") {
+      return;
+    }
+
+    if (changes[USER_LIST_STORAGE_KEY]) {
+      loadDisplayedCurrencies()
+        .then(() => {
+          if (cachedRates) {
+            renderCurrencyList({ conversion_rates: cachedRates });
+            attachInputListeners();
+            calculateAll(currentBaseCode, currentBaseAmount, currentBaseDisplay);
+          } else {
+            renderLoadingState();
+          }
+        })
+        .catch((error) => {
+          console.warn("Failed to refresh currency list", error);
+        });
+    }
+  });
+}
 document.addEventListener("DOMContentLoaded", async () => {
   await initializeLanguage();
+  await loadDisplayedCurrencies();
   bindSettingsButton();
   bindLanguageToggle();
-  loadRatesAndRender();
+  await loadRatesAndRender();
 });
+
+
+
+
+
+
+
+
+
 
 
 
